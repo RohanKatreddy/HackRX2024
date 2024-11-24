@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import blendClient from "./BlandClient";
-import {ROHAN_PHONE_NUM } from "../data/phoneNums";
+import { ROHAN_PHONE_NUM } from "../data/phoneNums";
+import { defaultCallPrompt } from "../data/prompts";
 
 interface SendCallResponse {
   status: string;
@@ -15,65 +15,55 @@ interface CallDetailResponse {
   concatenated_transcript: string;
 }
 
-const defaultTaskPrompt =
-  "You are a smart pharmacy assistant. Your task is of the following:\n";
+interface Prop {
+  isLoading: boolean,
+  result: string,
+}
 
-
-function useCall(
-  taskPrompt: string,
+async function useCall(
+  callPrompt: string,
+  updateFunction: (result: Prop) => void,
   phoneNum?: number
 ) {
-  // state variables
-  const [response, setResponse] = useState<CallDetailResponse>(
-    {} as CallDetailResponse
-  );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
-
   // body of the send call request; see https://docs.bland.ai/api-v1/post/calls
   const sendCallBody = {
     phone_number: phoneNum ? phoneNum : ROHAN_PHONE_NUM,
     from: null,
-    task: `${defaultTaskPrompt}${taskPrompt}`,
+    task: `${defaultCallPrompt}${callPrompt}`,
     module: "turbo",
     language: "en",
     voice: "Alexa",
   };
 
-  // Effect hook to make both API request
-  useEffect(() => {
-    const controller = new AbortController();
-    // makes the phone call
-    blendClient
-      .post<SendCallResponse>("/", sendCallBody)
-      .then((res) => {
-        console.log(res);
-        let callId = res.data.call_id;
+  // append an empty loading card
+  updateFunction({
+    isLoading: true,
+    result: "",
+  })
 
-        setTimeout(() => {
-          // get result of phone call
-          blendClient
-            .get<CallDetailResponse>(`/${callId}`)
-            .then((res) => {
-              console.log(res.data);
-              setResponse(res.data);
-              setLoading(false);
-            })
-            .catch((err) => {
-              console.log(err);
-              setError(err);
-            });
-        }, 60000);
-      })
-      .catch((err) => {
-        console.log(err);
-        setError(err);
-      });
+  // makes the phone call
+  blendClient
+    .post<SendCallResponse>("/", sendCallBody)
+    .then((res) => {
+      console.log(res);
+      let callId = res.data.call_id;
 
-    return () => controller.abort();
-  }, []);
-
-  return { response, loading, error };
+      setTimeout(() => {
+        // get result of phone call
+        blendClient
+          .get<CallDetailResponse>(`/${callId}`)
+          .then((res) => {
+            console.log(res.data);
+            updateFunction({isLoading: false, result: ""})
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, 150000);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export default useCall;
