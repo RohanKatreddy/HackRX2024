@@ -1,24 +1,12 @@
 import { Patient } from "../components/PrescriptionCard";
 
-const PatientList: Patient[] = [
-  {
-    patientName: "Huang, Victor",
-    dob: "2006/10/01",
-    sex: "Male",
-    activeRx: "1234567",
-    medication: [
-      ["Sandoz Atorvastatin", 20],
-      ["Shingrix", 5],
-      ["Sandoz Ramipril", 10],
-    ],
-    due: "1 day ago",
-  },
+const PatientListDemo: Patient[] = [
   {
     patientName: "Jeon, Amelia",
     dob: "2006/02/21",
     sex: "Female",
     activeRx: "8910111",
-    medication: [["Shingrix", 20]],
+    medication: [["Sythroid", 20]],
     due: "5 hrs ago",
   },
   {
@@ -48,4 +36,4 @@ const PatientList: Patient[] = [
   },
 ];
 
-export default PatientList;
+export default PatientListDemo;
