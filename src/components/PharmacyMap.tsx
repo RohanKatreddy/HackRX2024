@@ -8,10 +8,10 @@ function PharmacyMap () {
                 
                 <Map
                 style={{width: '60vw', height: '60vh'}}
-                zoom={12.5}
+                defaultZoom={12.5}
                 gestureHandling={'greedy'}
                 disableDefaultUI={true}
-                center={{lat: 45.9636, lng: -66.6431}}
+                defaultCenter={{lat: 45.9636, lng: -66.6431}}
                 >
                     <Marker position={{lat: 45.968150, lng: -66.630390}}/>
                     <Marker position={{lat: 45.976770, lng: -66.648310}}/>
