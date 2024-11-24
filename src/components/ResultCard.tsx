@@ -22,7 +22,7 @@ function ResultCard({
     return (
       <div
         className={"card p-2 m-2" + bgColour}
-        style={{ width: "18rem" }}
+        style={{ width: "18rem", transitionDuration: "0.2s" }}
         onMouseEnter={() => setSelected(true)}
         onMouseLeave={() => setSelected(false)}
       >
@@ -47,7 +47,7 @@ function ResultCard({
   return (
     <div
       className={"card p-2 m-2" + bgColour}
-      style={{ width: "18rem" }}
+      style={{ width: "18rem", transitionDuration:"0.2s" }}
       onMouseEnter={() => setSelected(true)}
       onMouseLeave={() => setSelected(false)}
     >
