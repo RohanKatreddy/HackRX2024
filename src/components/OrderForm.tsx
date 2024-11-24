@@ -1,6 +1,8 @@
 import { useState } from "react";
 import ResultCard, { RequestResult } from "./ResultCard";
-import ResultCardContainer from "../ResultCardContainer";
+import ResultCardContainer from "../components/ResultCardContainer";
+import useCall from "../utils/useCall";
+import { all } from "axios";
 
 interface DrugRequest {
   prescription: string,
@@ -22,7 +24,8 @@ function OrderForm() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setAllInputs([...allInputs, {...currInput, isLoading: false, result: ""}])
+    useCall("ask him about his cocane addiction", allInputs, (newState) => setAllInputs([...allInputs, newState]) ,)
+    // setAllInputs([...allInputs, {...currInput, isLoading: loading, result: transcipt}]);
   };
 
   const handleUnitSelection = (event: React.MouseEvent<HTMLLIElement>) => {

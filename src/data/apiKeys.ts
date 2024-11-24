@@ -4,5 +4,5 @@
 
 //export const API_KEY = "org_000378ca82bb0666e95f16ac46f7c4c9388da3984c59a5562bbb24a967fa2addcd5d157298d5267026da69";
 export const AMELIA_KEY = "org_09fad426b73a2f4318f888752973f63f32e727a7510dfcfea7f08b252b43ea3cab5ff8c62312b5db963069";
-export const ROHAN_KEY = "org_51f19acc2d0e2c2cb0d10d8e787bb24319852ea585655f9cbcc510fc7469218cc6c0bc1d84b62976b6ff69"
-export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY;
+export const ROHAN_KEY = "org_51f19acc2d0e2c2cb0d10d8e787bb24319852ea585655f9cbcc510fc7469218cc6c0bc1d84b62976b6ff69";
+export const OPENAI_KEY = "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";
