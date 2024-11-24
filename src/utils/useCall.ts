@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import blendClient from "./BlandClient";
 import { ROHAN_PHONE_NUM } from "../data/phoneNums";
 import { defaultCallPrompt } from "../data/prompts";
-import { RequestResult } from "../components/ResultCard";
 
 interface SendCallResponse {
   status: string;
@@ -17,10 +15,14 @@ interface CallDetailResponse {
   concatenated_transcript: string;
 }
 
+interface Prop {
+  isLoading: boolean,
+  result: string,
+}
+
 async function useCall(
   callPrompt: string,
-  state: RequestResult[],
-  updateFunction: (result: RequestResult) => void,
+  updateFunction: (result: Prop) => void,
   phoneNum?: number
 ) {
   // body of the send call request; see https://docs.bland.ai/api-v1/post/calls
@@ -35,11 +37,8 @@ async function useCall(
 
   // append an empty loading card
   updateFunction({
-    prescription: "loading",
-    quantity: 100,
     isLoading: true,
     result: "",
-    units: "",
   })
 
   // makes the phone call
@@ -55,6 +54,7 @@ async function useCall(
           .get<CallDetailResponse>(`/${callId}`)
           .then((res) => {
             console.log(res.data);
+            updateFunction({isLoading: false, result: ""})
           })
           .catch((err) => {
             console.log(err);

@@ -3,7 +3,6 @@ import PharmacyMap from "./PharmacyMap";
 import ResultCard, { RequestResult } from "./ResultCard";
 import ResultCardContainer from "../components/ResultCardContainer";
 import useCall from "../utils/useCall";
-import { all } from "axios";
 
 interface DrugRequest {
   prescription: string;
@@ -29,8 +28,33 @@ function OrderForm() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    useCall("ask him about his cocane addiction", allInputs, (newState) => setAllInputs([...allInputs, newState]) ,)
-    // setAllInputs([...allInputs, {...currInput, isLoading: loading, result: transcipt}]);
+    let { prescription, quantity, units } = currInput;
+    let transferPrompt = `
+    You are going to be calling for a inventory transfer, here are relavent informtation:
+    Steps for Calling Another Pharmacy for a Transfer of Inventory
+When a pharmacy assistant needs to facilitate an inventory transfer due to a shortage, the process involves the following steps:
+Initial Contact:
+Call local pharmacies to inquire about the required drug.
+Start with an introduction:
+Example: "Hi, this is Sobeys Pharmacy #375. We are wondering if you have X amount of Y drug available for a transfer."
+Provide key details in the introduction:
+Pharmacy name and ID number designated to each retail pharmacy.
+The drug's brand name, generic name, dosage, and, if possible, the Drug Identification Number (DIN).
+Confirmation:
+The other pharmacy may ask for the DIN to confirm the specific drug and dosage required.
+Clearly communicate all necessary details to avoid errors.
+Processing the Transfer:
+If the drug is available, the other pharmacy will process a prescription directed to the requesting pharmacy.
+
+in this case, the drug you are asking about has DIN number ${prescription}, and the quantity is ${quantity}, with units ${units}`;
+
+    useCall(transferPrompt, (newState) =>
+      setAllInputs([...allInputs.slice(0, -1), {...newState, prescription, quantity, units}])
+    );
+    // setAllInputs([
+    //   ...allInputs.slice(0, -1),
+    //   { ...{ isLoading: true, result: "" }, prescription, quantity, units },
+    // ]);
   };
 
   const handleUnitSelection = (event: React.MouseEvent<HTMLLIElement>) => {
