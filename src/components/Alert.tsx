@@ -36,7 +36,7 @@ const Alert = ({ message }: Props) => {
               onClick={handleClose} // Close the popup when clicked
               className="btn btn-dark btn-sm mt-2"
             >
-              Close
+              Add to Order
             </button>
             <button
               onClick={handleClose} // Close the popup when clicked
