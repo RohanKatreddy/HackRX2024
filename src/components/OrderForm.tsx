@@ -107,7 +107,7 @@ in this case, the drug you are asking about has DIN number ${prescription}, and 
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {ValidUnits[0]}
+                  {currInput.units}
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end">
                   {ValidUnits.map((unit) => (
