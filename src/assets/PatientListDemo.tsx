@@ -6,7 +6,7 @@ const PatientListDemo: Patient[] = [
     dob: "2006/02/21",
     sex: "Female",
     activeRx: "8910111",
-    medication: [["Sythroid", 20]],
+    medication: [["Shingrix", 20]],
     due: "5 hrs ago",
   },
   {

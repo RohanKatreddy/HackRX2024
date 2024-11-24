@@ -13,6 +13,9 @@ import Button from "./components/Button";
 import PopUp from "./components/PopUp";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Toast } from "bootstrap";
+import { Patient } from "./components/PrescriptionCard";
+import { Drug } from "./assets/DrugInventoryList";
+import Alert from "./components/Alert.js";
 
 import "./App.css";
 import { useState } from "react";
@@ -21,6 +24,59 @@ function App() {
   // Inventory of drugs
   const [drugInventoryData, setDrugInventoryData] = useState(DrugInventoryList);
   const [patientData, setPatientData] = useState(PatientList);
+  const [shortage, setShortage] = useState<
+    { patientName: string; drugName: string; din: string; shortage: number }[]
+  >([]);
+
+  function calculateDrugShortages(
+    patients: Patient[],
+    drugs: Drug[]
+  ): {
+    patientName: string;
+    drugName: string;
+    din: string;
+    shortage: number;
+  }[] {
+    const shortages: {
+      patientName: string;
+      drugName: string;
+      din: string;
+      shortage: number;
+    }[] = [];
+
+    patients.forEach((patient) => {
+      patient.medication.forEach(([medName, requiredQuantity]) => {
+        const [medBrand, ...medDrugNameParts] = medName.split(" ");
+        const medDrugName = medDrugNameParts.join(" ");
+
+        const drug = drugs.find(
+          (d) => d.brand === medBrand && d.name === medDrugName
+        );
+
+        if (drug) {
+          const shortage = requiredQuantity - drug.quantity;
+          if (shortage > 0) {
+            shortages.push({
+              patientName: patient.patientName,
+              drugName: `${drug.brand} ${drug.name}`,
+              din: drug.din,
+              shortage,
+            });
+          }
+        }
+      });
+    });
+
+    return shortages;
+  }
+
+  let message = "";
+  shortage.forEach(
+    (drug) =>
+      (message += `${drug.drugName} DIN: ${drug.din} Quantity Required: ${drug.shortage}\n\n`) // Added extra newline for spacing between drugs
+  );
+
+  let showing = shortage.length === 0 ? false : true;
 
   return (
     <BrowserRouter>
@@ -30,6 +86,8 @@ function App() {
             index
             element={
               <>
+                {showing && <Alert message={message}></Alert>}
+
                 {drugInventoryData
                   .filter((drug) => drug.quantity < drug.standardQuantity[0]) // Filter drugs with low inventory
                   .map((drug) => (
@@ -66,6 +124,9 @@ function App() {
                           Toast.getOrCreateInstance(toastLiveExample);
                         toastBootstrap.show();
                       }
+                      setShortage(
+                        calculateDrugShortages(patientData, drugInventoryData)
+                      );
                     }}
                   ></Button>
                   <DrugInventory heading="Drug Inventory">
