@@ -22,10 +22,8 @@ function ResultCard({ prescription, quantity, units }: RequestResult) {
       <hr />
       <div className="">
         <div className="container col-7">
-          <h6 className={" mb-2 text-body-secondary " + bgColour}>
-            {"DIN: " + prescription}
-          </h6>
-          <h6 className={" mb-2 text-body-secondary " + bgColour}>
+          <h6 className={"card-subtitle mb-2 "}>{"DIN: " + prescription}</h6>
+          <h6 className={"card-subtitle mb-2 "}>
             {"Quantity: " + quantity + " " + units}
           </h6>
         </div>
