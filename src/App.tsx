@@ -15,7 +15,7 @@ import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Toast } from "bootstrap";
 
 import "./App.css";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 function App() {
   // Inventory of drugs
